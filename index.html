@@ -109,6 +109,34 @@
 
     <div id="modal-root" class="modal-root hidden"></div>
     <div id="floating-layer" class="floating-layer"></div>
+
+    <!-- Mobile bottom action bar (hidden on desktop) -->
+    <div id="mobile-bar" class="mobile-bar panel-glass">
+      <button id="btn-mobile-map" class="mobile-btn"><span class="mb-icon">🗺️</span>Map</button>
+      <button id="btn-mobile-end-turn" class="mobile-btn danger"><span class="mb-icon">⚔️</span>End Turn</button>
+      <button id="btn-mobile-deck" class="mobile-btn"><span class="mb-icon">📦</span>Deck</button>
+      <button id="btn-mobile-info" class="mobile-btn"><span class="mb-icon">📜</span>Info</button>
+      <button id="btn-mobile-potion" class="mobile-btn"><span class="mb-icon">🧪</span>Potion</button>
+    </div>
+  </div><!-- /#app -->
+
+  <!-- Mobile overlay panel (log + relics) — fixed, outside app shell -->
+  <div id="mobile-panel-overlay" class="mobile-panel-overlay">
+    <div class="mobile-panel-inner panel-glass">
+      <h2>Combat Log</h2>
+      <div id="mobile-log" class="combat-log" style="max-height:200px"></div>
+      <h2 style="margin-top:16px">Relics</h2>
+      <div id="mobile-relics" class="relic-bar"></div>
+      <h2 style="margin-top:16px">Status</h2>
+      <div id="mobile-status" class="status-list"></div>
+      <h2 style="margin-top:16px">Actions</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+        <button id="btn-mobile-drawer-discard" class="fantasy-button">Discard Pile</button>
+        <button id="btn-mobile-drawer-draw" class="fantasy-button">Draw Pile</button>
+        <button id="btn-mobile-drawer-exhaust" class="fantasy-button">Exhaust</button>
+        <button id="btn-mobile-drawer-close" class="fantasy-button subtle">Close</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="src/game.js"></script>

@@ -32,7 +32,13 @@ export class GameUI {
       discardButton: document.getElementById('btn-discard'),
       drawButton: document.getElementById('btn-draw'),
       exhaustButton: document.getElementById('btn-exhaust'),
-      potionButton: document.getElementById('btn-potion')
+      potionButton: document.getElementById('btn-potion'),
+      // Mobile elements
+      mobileBar: document.getElementById('mobile-bar'),
+      mobilePanelOverlay: document.getElementById('mobile-panel-overlay'),
+      mobileLog: document.getElementById('mobile-log'),
+      mobileRelics: document.getElementById('mobile-relics'),
+      mobileStatus: document.getElementById('mobile-status')
     };
     this.selectedCardId = null;
     this.bindEvents();
@@ -53,6 +59,18 @@ export class GameUI {
     this.elements.drawButton.addEventListener('click', () => this.openPileModal('Draw Pile', this.game.player.drawPile));
     this.elements.exhaustButton.addEventListener('click', () => this.openPileModal('Exhaust Pile', this.game.player.exhaustPile));
     this.elements.potionButton.addEventListener('click', () => this.usePotion());
+
+    // Mobile bar buttons
+    document.getElementById('btn-mobile-map')?.addEventListener('click', () => this.game.openMap());
+    document.getElementById('btn-mobile-end-turn')?.addEventListener('click', () => this.game.endTurn());
+    document.getElementById('btn-mobile-deck')?.addEventListener('click', () => this.openPileModal('Master Deck', this.game.player.masterDeck));
+    document.getElementById('btn-mobile-potion')?.addEventListener('click', () => this.usePotion());
+    document.getElementById('btn-mobile-info')?.addEventListener('click', () => this.openMobilePanel());
+    document.getElementById('btn-mobile-drawer-close')?.addEventListener('click', () => this.closeMobilePanel());
+    document.getElementById('btn-mobile-drawer-discard')?.addEventListener('click', () => { this.closeMobilePanel(); this.openPileModal('Discard Pile', this.game.player.discardPile); });
+    document.getElementById('btn-mobile-drawer-draw')?.addEventListener('click', () => { this.closeMobilePanel(); this.openPileModal('Draw Pile', this.game.player.drawPile); });
+    document.getElementById('btn-mobile-drawer-exhaust')?.addEventListener('click', () => { this.closeMobilePanel(); this.openPileModal('Exhaust Pile', this.game.player.exhaustPile); });
+    this.elements.mobilePanelOverlay?.addEventListener('click', (e) => { if (e.target === this.elements.mobilePanelOverlay) this.closeMobilePanel(); });
   }
 
   render() {
@@ -147,16 +165,17 @@ export class GameUI {
 
     const laneWidth = 18;
     const floorHeight = 70;
-    const canvasHeight = 40 + map.floors.length * floorHeight;
-    let html = `<div class="map-canvas" style="min-height:${canvasHeight}px"><svg class="map-link" viewBox="0 0 100 ${canvasHeight}" preserveAspectRatio="none">`;
+    // Each floor center is at y = 30 + floorIndex * floorHeight
+    const canvasHeight = 30 + map.floors.length * floorHeight + 30;
+    let html = `<div class="map-canvas" style="height:${canvasHeight}px"><svg class="map-link" viewBox="0 0 100 ${canvasHeight}" preserveAspectRatio="none" style="height:${canvasHeight}px">`;
     map.floors.forEach((floorNodes, floorIndex) => {
+      const y = 30 + floorIndex * floorHeight;
       floorNodes.forEach((node) => {
         const x = 8 + node.lane * laneWidth;
-        const y = 30 + floorIndex * floorHeight;
         node.connections.forEach((targetId) => {
           const target = map.nodeIndex[targetId];
           const tx = 8 + target.lane * laneWidth;
-          const ty = 30 + floorIndex * floorHeight + floorHeight;
+          const ty = 30 + (target.floor - 1) * floorHeight;
           html += `<line x1="${x}" y1="${y}" x2="${tx}" y2="${ty}"/>`;
         });
       });
@@ -170,12 +189,13 @@ export class GameUI {
         const available = map.availableNodeIds.includes(node.id);
         const visited = map.visitedNodeIds.includes(node.id);
         const x = 8 + node.lane * laneWidth;
-        const y = 10 + (node.floor - 1) * floorHeight;
+        // top = node center y, paired with CSS transform: translate(-50%, -50%)
+        const y = 30 + (node.floor - 1) * floorHeight;
         html += `
           <button class="map-node ${node.type} ${current ? 'current' : ''} ${available ? 'available' : ''} ${visited ? 'visited' : ''}"
             style="left:${x}%; top:${y}px" data-node-id="${node.id}" ${available ? '' : 'disabled'}>
             <span>${meta.icon}</span>
-            <small>${node.floor}</small>
+            <small>F${node.floor}</small>
           </button>`;
       });
     });
@@ -184,6 +204,17 @@ export class GameUI {
     this.elements.mapView.querySelectorAll('[data-node-id]').forEach((button) => {
       button.addEventListener('click', () => this.game.chooseMapNode(button.dataset.nodeId));
     });
+
+    // Auto-scroll map so the available / current nodes are visible
+    const scrollTarget = map.currentNodeId ?? map.availableNodeIds[0];
+    if (scrollTarget) {
+      const targetNode = map.nodeIndex[scrollTarget];
+      if (targetNode) {
+        const targetY = 30 + (targetNode.floor - 1) * floorHeight;
+        const containerH = this.elements.mapView.clientHeight;
+        this.elements.mapView.scrollTop = Math.max(0, targetY - containerH / 2);
+      }
+    }
   }
 
   renderCombat(combat, view) {
@@ -349,6 +380,17 @@ export class GameUI {
   openPileModal(title, cards) {
     this.game.modal = { type: 'pile', title, cards: cards.map((card) => ({ ...card })), mode: 'view' };
     this.game.emitState();
+  }
+
+  openMobilePanel() {
+    if (this.elements.mobileLog) this.elements.mobileLog.innerHTML = this.elements.log.innerHTML;
+    if (this.elements.mobileRelics) this.elements.mobileRelics.innerHTML = this.elements.relicBar.innerHTML;
+    if (this.elements.mobileStatus) this.elements.mobileStatus.innerHTML = this.elements.playerStatus.innerHTML;
+    if (this.elements.mobilePanelOverlay) this.elements.mobilePanelOverlay.classList.add('open');
+  }
+
+  closeMobilePanel() {
+    if (this.elements.mobilePanelOverlay) this.elements.mobilePanelOverlay.classList.remove('open');
   }
 
   cardMarkup(card) {
