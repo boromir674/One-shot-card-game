@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [main, copilot/create-game-slay-the-spire]
+    branches: [copilot/update-deploy-yaml-and-test-rooms]
 permissions:
   contents: read
   pages: write

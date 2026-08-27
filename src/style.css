@@ -18,13 +18,14 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; font-family: 'Inter', sans-serif; color: var(--text); background: radial-gradient(circle at top, #1a1740 0%, #0a1024 35%, #04060d 100%); }
-body { overflow: hidden; }
+body { overflow-x: hidden; overflow-y: auto; }
 button { font: inherit; }
+button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: linear-gradient(var(--violet), #5b6cff); border-radius: 999px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
 
-.app-shell { position: relative; height: 100vh; padding: 16px; display: grid; grid-template-rows: auto 1fr auto; gap: 16px; overflow: hidden; }
+.app-shell { position: relative; min-height: 100svh; height: auto; padding: 16px; display: grid; grid-template-rows: auto 1fr auto; gap: 16px; overflow: visible; }
 .bg-vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.45) 100%); }
 .panel-glass {
   background: linear-gradient(180deg, rgba(24, 30, 57, 0.82), rgba(9, 14, 28, 0.88));
@@ -33,7 +34,7 @@ button { font: inherit; }
   backdrop-filter: blur(18px);
   border-radius: var(--radius);
 }
-.topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; gap: 20px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; gap: 20px; flex-wrap: wrap; }
 .run-banner h1 { margin: 0; font: 700 30px 'Cinzel', serif; letter-spacing: 0.06em; }
 .run-banner p { margin: 6px 0 0; color: var(--muted); }
 .resource-strip { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
@@ -150,7 +151,7 @@ button { font: inherit; }
 .info-card { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; gap: 10px; }
 .info-card span { color: var(--muted); }
 
-.modal-root { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(5, 8, 18, 0.78); backdrop-filter: blur(12px); z-index: 50; }
+.modal-root { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(5, 8, 18, 0.78); backdrop-filter: blur(12px); z-index: 50; overflow: auto; padding: 12px; }
 .modal-shell { width: min(860px, calc(100vw - 40px)); padding: 24px; border-radius: 26px; }
 .modal-shell.wide { width: min(1100px, calc(100vw - 40px)); }
 .modal-shell h2 { margin: 0 0 8px; font: 700 30px 'Cinzel', serif; }
@@ -189,4 +190,49 @@ button { font: inherit; }
 @media (max-width: 1400px) {
   .main-layout { grid-template-columns: 240px minmax(0, 1fr) 240px; }
   .card { width: 168px; min-width: 168px; }
+}
+
+@media (max-width: 1100px) {
+  .app-shell { padding: 12px; gap: 12px; }
+  .topbar { padding: 14px 16px; }
+  .resource-strip { justify-content: flex-start; }
+  .main-layout { display: flex; flex-direction: column; }
+  .battlefield { order: 1; min-height: 62vh; }
+  .left-sidebar { order: 2; }
+  .right-sidebar { order: 3; }
+  .sidebar { padding: 16px; }
+  .sidebar-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-view, .combat-view { height: auto; min-height: 58vh; }
+  .map-canvas { min-height: 720px; }
+  .hand-zone { padding: 14px; }
+  .hand { min-height: 224px; }
+  .card { width: 162px; min-width: 162px; min-height: 228px; }
+  .enemy { width: 100%; max-width: 230px; }
+  .modal-shell, .modal-shell.wide { width: min(100vw - 24px, 960px); padding: 20px; }
+  .shop-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .app-shell { padding: 10px; gap: 10px; }
+  .topbar, .hand-header, .scene-header { flex-direction: column; align-items: stretch; }
+  .resource-strip { justify-content: stretch; }
+  .resource-pill { min-width: 0; flex: 1 1 120px; }
+  .main-layout { gap: 10px; }
+  .battlefield { padding: 14px; min-height: 54vh; }
+  .scene-header h2, .hand-header h2, .modal-shell h2 { font-size: 22px; }
+  .scene-header p, .hand-header p, .run-banner p { font-size: 14px; }
+  .sidebar-actions { grid-template-columns: 1fr; }
+  .map-canvas { min-height: 620px; }
+  .map-node { width: 60px; height: 60px; }
+  .map-node span { font-size: 20px; }
+  .card { width: 150px; min-width: 150px; min-height: 222px; }
+  .card-desc { min-height: 68px; font-size: 13px; }
+  .hand { gap: 10px; padding-top: 10px; min-height: 210px; }
+  .enemy-area { padding: 18px 8px 8px; }
+  .enemy { max-width: none; }
+  .modal-shell, .modal-shell.wide { width: calc(100vw - 20px); padding: 16px; }
+  .modal-actions, .modal-actions.stacked { gap: 10px; }
+  .shop-entry .card { width: 100%; min-width: 0; }
+  .relic-shop-item { grid-template-columns: auto 1fr; }
+  .relic-shop-item em { grid-column: 2; }
 }
