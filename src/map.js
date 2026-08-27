@@ -35,11 +35,12 @@ export function generateActMap() {
     const current = floors[i];
     const next = floors[i + 1];
     current.forEach((node) => {
-      const candidates = next
-        .filter((candidate) => Math.abs(candidate.lane - node.lane) <= 1)
+      const orderedTargets = [...next]
         .sort((a, b) => Math.abs(a.lane - node.lane) - Math.abs(b.lane - node.lane));
-      const count = Math.min(candidates.length, Math.random() > 0.45 ? 2 : 1);
-      node.connections = candidates.slice(0, count).map((candidate) => candidate.id);
+      const nearbyTargets = orderedTargets.filter((candidate) => Math.abs(candidate.lane - node.lane) <= 1);
+      const pool = nearbyTargets.length ? nearbyTargets : orderedTargets;
+      const count = Math.min(pool.length, Math.random() > 0.45 ? 2 : 1);
+      node.connections = pool.slice(0, count).map((candidate) => candidate.id);
     });
   }
 

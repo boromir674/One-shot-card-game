@@ -92,6 +92,7 @@ button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
   position: absolute; transform: translate(-50%, 0); width: 70px; height: 70px; border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.12); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), rgba(20, 26, 48, 0.96)); color: var(--text);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 12px 22px rgba(0,0,0,0.28);
+  z-index: 2;
 }
 .map-node.available { box-shadow: 0 0 18px rgba(107,224,255,0.45), 0 0 32px rgba(168,118,255,0.25); cursor: pointer; }
 .map-node.current { box-shadow: 0 0 26px rgba(255,213,125,0.6); border-color: rgba(255,213,125,0.7); }
@@ -223,7 +224,7 @@ button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
   .scene-header p, .hand-header p, .run-banner p { font-size: 14px; }
   .sidebar-actions { grid-template-columns: 1fr; }
   .map-canvas { min-height: 620px; }
-  .map-node { width: 60px; height: 60px; }
+  .map-node { width: 64px; height: 64px; touch-action: manipulation; }
   .map-node span { font-size: 20px; }
   .card { width: 150px; min-width: 150px; min-height: 222px; }
   .card-desc { min-height: 68px; font-size: 13px; }

@@ -1,7 +1,7 @@
 import { CombatEngine } from './combat.js';
 import { GameUI } from './ui.js';
 import { createEncounter } from './enemies.js';
-import { generateActMap } from './map.js';
+import { generateActMap, getNodeMeta } from './map.js';
 import { RELIC_DEFS, cloneCard, createCard, getCardPrice, getRandomRelics, getRewardChoices, getShopCards, getStarterDeck, upgradeCard } from './cards.js';
 
 class Player {
@@ -154,6 +154,7 @@ class GameState extends EventTarget {
   chooseMapNode(nodeId) {
     if (!this.map.availableNodeIds.includes(nodeId)) return;
     const node = this.map.nodeIndex[nodeId];
+    this.log(`Entering ${getNodeMeta(node.type).label}.`);
     this.map.currentNodeId = nodeId;
     this.map.visitedNodeIds.push(nodeId);
     this.map.availableNodeIds = [];
