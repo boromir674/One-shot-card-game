@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Shot Spire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <div class="bg-vignette"></div>
+    <header class="topbar panel-glass">
+      <div class="run-banner">
+        <h1>One Shot Spire</h1>
+        <p id="run-subtitle">A dark card roguelike for GitHub Pages</p>
+      </div>
+      <div class="resource-strip">
+        <div class="resource-pill hp-pill">
+          <span>HP</span>
+          <div class="hp-track"><div id="player-hp-fill" class="hp-fill"></div></div>
+          <strong id="player-hp-text">80 / 80</strong>
+        </div>
+        <div class="resource-pill">
+          <span>Gold</span>
+          <strong id="gold-display">99</strong>
+        </div>
+        <div class="resource-pill">
+          <span>Floor</span>
+          <strong id="floor-display">1 / 15</strong>
+        </div>
+        <div class="resource-pill energy-cluster" id="energy-display"></div>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <aside class="sidebar left-sidebar panel-glass">
+        <section>
+          <div class="sidebar-title-row">
+            <h2>Relics</h2>
+          </div>
+          <div id="relic-bar" class="relic-bar"></div>
+        </section>
+        <section>
+          <div class="sidebar-title-row">
+            <h2>Status</h2>
+          </div>
+          <div id="player-status" class="status-list"></div>
+        </section>
+        <section>
+          <div class="sidebar-title-row">
+            <h2>Actions</h2>
+          </div>
+          <div class="sidebar-actions">
+            <button id="btn-map" class="fantasy-button">Map</button>
+            <button id="btn-end-turn" class="fantasy-button danger">End Turn</button>
+            <button id="btn-deck" class="fantasy-button">Deck</button>
+            <button id="btn-discard" class="fantasy-button">Discard</button>
+            <button id="btn-draw" class="fantasy-button">Draw</button>
+            <button id="btn-exhaust" class="fantasy-button">Exhaust</button>
+            <button id="btn-potion" class="fantasy-button">Use Potion</button>
+          </div>
+        </section>
+      </aside>
+
+      <section id="battlefield" class="battlefield panel-glass">
+        <div class="scene-header">
+          <div>
+            <h2 id="scene-title">Act I Map</h2>
+            <p id="scene-description">Chart a route through danger, treasure, and firelit respite.</p>
+          </div>
+          <div id="combat-turn-indicator" class="turn-indicator hidden">Turn 1</div>
+        </div>
+        <div id="map-view" class="map-view"></div>
+        <div id="combat-view" class="combat-view hidden">
+          <div id="enemy-area" class="enemy-area"></div>
+          <div id="combat-center-flair" class="combat-center-flair"></div>
+        </div>
+      </section>
+
+      <aside class="sidebar right-sidebar panel-glass">
+        <section>
+          <div class="sidebar-title-row">
+            <h2>Combat Log</h2>
+          </div>
+          <div id="combat-log" class="combat-log"></div>
+        </section>
+        <section>
+          <div class="sidebar-title-row">
+            <h2>Run Info</h2>
+          </div>
+          <div id="run-info" class="run-info"></div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="hand-zone panel-glass">
+      <div id="hand-header" class="hand-header">
+        <div>
+          <h2>Hand</h2>
+          <p id="hand-help">Play cards by clicking them, then pick a target if needed.</p>
+        </div>
+        <div id="draw-discard-summary" class="draw-discard-summary"></div>
+      </div>
+      <div id="hand" class="hand"></div>
+    </footer>
+
+    <div id="modal-root" class="modal-root hidden"></div>
+    <div id="floating-layer" class="floating-layer"></div>
+  </div>
+
+  <script type="module" src="src/game.js"></script>
+</body>
+</html>
